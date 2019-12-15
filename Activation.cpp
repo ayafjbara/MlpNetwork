@@ -3,3 +3,11 @@
 //
 
 #include "Activation.h"
+
+Activation::Activation(ActivationType actType) {
+
+}
+
+enum ActivationType Activation::getActivationType() {
+    return Softmax;
+}

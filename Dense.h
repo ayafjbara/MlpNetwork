@@ -6,8 +6,14 @@
 #define C___DENSE_H
 
 
-class Dense {
+#include "Activation.h"
 
+class Dense {
+public:
+//    Dense(w, bias, ActivationType);
+//    getWeights();
+//    getBias();
+//    Activation getActivation();
 };
 
 
