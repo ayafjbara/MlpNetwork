@@ -1,5 +1,5 @@
 #include <fstream>
-
+#include <iostream>
 #include "Matrix.h"
 #include "activation.h"
 #include "Dense.h"
@@ -20,8 +20,6 @@
 #define ARGS_COUNT (ARGS_START_IDX + (MLP_SIZE * 2))
 #define WEIGHTS_START_IDX ARGS_START_IDX
 #define BIAS_START_IDX (ARGS_START_IDX + MLP_SIZE)
-
-
 
 
 /**
@@ -45,14 +43,14 @@ void usage()
 bool readFileToMatrix(const std::string &filePath, Matrix &mat)
 {
     std::ifstream is;
-    is.open(filePath, std::ios::in | std::ios::binary | std::ios::ate);
-    if(!is.is_open())
+    is.open("C:\\Users\\97250\\Desktop\\MlpNetwork\\files\\parameters\\w1", std::ios::in | std::ios::binary | std::ios::ate);
+    if (!is.is_open())
     {
         return false;
     }
 
     long int matByteSize = (long int) mat.getCols() * mat.getRows() * sizeof(float);
-    if(is.tellg() != matByteSize)
+    if (is.tellg() != matByteSize)
     {
         is.close();
         return false;
@@ -76,7 +74,7 @@ bool readFileToMatrix(const std::string &filePath, Matrix &mat)
  */
 void loadParameters(char *paths[ARGS_COUNT], Matrix weights[MLP_SIZE], Matrix biases[MLP_SIZE])
 {
-    for(int i = 0; i < MLP_SIZE; i++)
+    for (int i = 0; i < MLP_SIZE; i++)
     {
         weights[i] = Matrix(weightsDims[i].rows, weightsDims[i].cols);
         biases[i] = Matrix(biasDims[i].rows, biasDims[i].cols);
@@ -84,8 +82,8 @@ void loadParameters(char *paths[ARGS_COUNT], Matrix weights[MLP_SIZE], Matrix bi
         std::string weightsPath(paths[WEIGHTS_START_IDX + i]);
         std::string biasPath(paths[BIAS_START_IDX + i]);
 
-        if(!(readFileToMatrix(weightsPath, weights[i]) &&
-           readFileToMatrix(biasPath, biases[i])))
+        if (!(readFileToMatrix(weightsPath, weights[i]) &&
+              readFileToMatrix(biasPath, biases[i])))
         {
             std::cerr << ERROR_INAVLID_PARAMETER << (i + 1) << std::endl;
             exit(EXIT_FAILURE);
@@ -111,31 +109,30 @@ void mlpCli(MlpNetwork &mlp)
 
     std::cout << INSERT_IMAGE_PATH << std::endl;
     std::cin >> imgPath;
-    if(!std::cin.good())
+    if (!std::cin.good())
     {
         std::cout << ERROR_INVALID_INPUT << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    while(imgPath != QUIT)
+    while (imgPath != QUIT)
     {
-        if(readFileToMatrix(imgPath, img))
+        if (readFileToMatrix(imgPath, img))
         {
             Matrix imgVec = img;
-            Digit output = mlp(imgVec.vectorize());
-            std::cout << "Image processed:" << std::endl
-                      << img << std::endl;
-            std::cout << "Mlp result: " << output.value <<
-                      " at probability: " << output.probability << std::endl;
-        }
-        else
+//            Digit output = mlp(imgVec.vectorize());
+//            std::cout << "Image processed:" << std::endl
+//                      << img << std::endl;
+//            std::cout << "Mlp result: " << output.value <<
+//                      " at probability: " << output.probability << std::endl;
+        } else
         {
             std::cout << ERROR_INVALID_IMG << imgPath << std::endl;
         }
 
         std::cout << INSERT_IMAGE_PATH << std::endl;
         std::cin >> imgPath;
-        if(!std::cin.good())
+        if (!std::cin.good())
         {
             std::cout << ERROR_INVALID_INPUT << std::endl;
             exit(EXIT_FAILURE);
@@ -151,7 +148,7 @@ void mlpCli(MlpNetwork &mlp)
  */
 int main(int argc, char **argv)
 {
-    if(argc != ARGS_COUNT)
+    if (argc != ARGS_COUNT)
     {
         usage();
         exit(EXIT_FAILURE);
@@ -161,9 +158,9 @@ int main(int argc, char **argv)
     Matrix biases[MLP_SIZE];
     loadParameters(argv, weights, biases);
 
-    MlpNetwork mlp(weights, biases);
-
-    mlpCli(mlp);
+//    MlpNetwork mlp(weights, biases);
+//
+//    mlpCli(mlp);
 
 
     return EXIT_SUCCESS;

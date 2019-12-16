@@ -3,6 +3,11 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <vector>
+#include <fstream>
+
+
+using namespace std;
 /**
  * @struct MatrixDims
  * @brief Matrix dimensions container
@@ -20,36 +25,45 @@ public:
 
     Matrix();
 
-    ~Matrix();
+    ~Matrix() {}
 
-    int getRows();
+    int getRows() const;
 
-    int getCols();
+    int getCols() const;
 
     void vectorize();
 
-    void plainPrint();
+    void plainPrint() const;
 
     Matrix &operator=(const Matrix &other);
 
-    Matrix operator+(const Matrix &a);
+    Matrix operator+(const Matrix &a) const;
 
-    Matrix operator*(const Matrix &a);
+    Matrix operator*(const Matrix &a) const;
 
-    Matrix operator*(float c);
+    Matrix operator*(float c) const;
 
     Matrix &operator+=(const Matrix &other);
 
-    float operator()(int i, int j);
+    float operator()(int i, int j) const;
 
-    float operator[](int i);
+    float operator[](int i) const;
 
-    Matrix &operator>>(const Matrix &other);
+    friend void operator>>(ifstream &in, const Matrix &m);
 
-    Matrix &operator<<(const Matrix &other);
+    friend void operator<<(ostream &os, const Matrix &m);
+
+    friend Matrix operator*(float c, const Matrix &a);
+
+    vector<vector<float>> getMatrix() const;
 
 private:
     struct MatrixDims matrixDims;
+    vector<vector<float >> matrix;
+
+    Matrix(vector<vector<float>> &matrix, int rows, int cols);
+
+    void setMatrix(vector<vector<float>> matrix);
 };
 
 #endif //MATRIX_H
