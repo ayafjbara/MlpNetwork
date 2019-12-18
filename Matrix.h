@@ -12,12 +12,14 @@ using namespace std;
  * @struct MatrixDims
  * @brief Matrix dimensions container
  */
-typedef struct MatrixDims {
+typedef struct MatrixDims
+{
     int rows, cols;
 } MatrixDims;
 
 // Insert Matrix class here...
-class Matrix {
+class Matrix
+{
 public:
     Matrix(int rows, int cols);
 
@@ -31,7 +33,7 @@ public:
 
     int getCols() const;
 
-    void vectorize();
+    Matrix &vectorize();
 
     void plainPrint() const;
 

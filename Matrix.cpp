@@ -51,7 +51,7 @@ void Matrix::setMatrix(vector<vector<float>> matrix) {
     this->matrix = matrix;
 }
 
-void Matrix::vectorize() {
+Matrix& Matrix::vectorize() {
     int curRows = matrixDims.rows;
     int curCols = matrixDims.cols;
     vector<vector<float >> matVector(curCols * curRows, vector<float>(1, 0));
@@ -129,7 +129,7 @@ float Matrix::operator[](int i) const {
 void operator>>(ifstream &in, const Matrix &m) {
     if (in.good())
     {
-        int length = in.tellg();
+        int length = m.getRows()*m.getCols();
         char *s =new char [length];
         in.read(s, length);
         cout<<s<<"\n";
