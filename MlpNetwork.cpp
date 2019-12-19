@@ -3,3 +3,9 @@
 //
 
 #include "MlpNetwork.h"
+
+MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[])
+{
+    this->weights;
+    this->biases;
+}
