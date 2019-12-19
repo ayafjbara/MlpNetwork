@@ -51,9 +51,9 @@ public:
 
     float operator[](int i) const;
 
-    friend void operator>>(ifstream &in, const Matrix &m);
+    friend istream &operator>>(istream &is, const Matrix &m);
 
-    friend void operator<<(ostream &os, const Matrix &m);
+    friend ostream &operator<<(ostream &os, const Matrix &m);
 
     friend Matrix operator*(float c, const Matrix &a);
 

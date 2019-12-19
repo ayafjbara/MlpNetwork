@@ -51,7 +51,7 @@ void Matrix::setMatrix(vector<vector<float>> matrix) {
     this->matrix = matrix;
 }
 
-Matrix& Matrix::vectorize() {
+Matrix &Matrix::vectorize() {
     int curRows = matrixDims.rows;
     int curCols = matrixDims.cols;
     vector<vector<float >> matVector(curCols * curRows, vector<float>(1, 0));
@@ -126,40 +126,48 @@ float Matrix::operator[](int i) const {
 }
 
 
-void operator>>(ifstream &in, const Matrix &m) {
-    if (in.good())
+istream &operator>>(istream &is, const Matrix &m) {
+    while (is.good())
     {
-        int length = m.getRows()*m.getCols();
-        char *s =new char [length];
-        in.read(s, length);
-        cout<<s<<"\n";
+//        float x;
+//        is >> x;
+//        cout << x << "\n";
+//        is >> x;
+//        cout << x << "\n";
+
+        int length = sizeof(float);
+        char *s = new char[length];
+        is.read(s, length);
+        cout << s << "\n";
     }
 //    for (int i = 0; i < m.getRows(); ++i)
 //    {
 //        for (int j = 0; j < m.getCols(); ++j)
-//            if (!(in >> m.p[i][j])) return in;
+//            if (!(is >> m.p[i][j])) return is;
 //    }
-//    return in;
+//    return is;
 }
 
-void operator<<(ostream &os, const Matrix &m) {
-    cout << "Image processed :"<< "\n";
-    for (int i = 0; i < m.getRows() ; ++i)
+ostream &operator<<(ostream &os, const Matrix &m) {
+    os << "Image processed :" << "\n";
+    for (int i = 0; i < m.getRows(); ++i)
     {
-        for (int j = 0; j <m.getCols() ; ++j)
+        for (int j = 0; j < m.getCols(); ++j)
         {
-            if( m(i,j) <= 0.1)
+            if (m(i, j) <= 0.1)
             {
-                cout<<"  ";
-            } else{
-                cout<<"**";
+                os << "  ";
+            } else
+            {
+                os << "**";
             }
         }
-        cout<<"\n";
+        os << "\n";
     }
-    cout<<"\n";
-    cout<<"Mlp result: <res > at probability: <prob>";//todo res and prob
-    cout<<"\n";
+    os << "\n";
+    os << "Mlp result: <res > at probability: <prob>";//todo res and prob
+    os << "\n";
+    return os;
 }
 
 Matrix Matrix::operator*(const Matrix &a) const {
