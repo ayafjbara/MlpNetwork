@@ -27,7 +27,8 @@ public:
 
     Matrix();
 
-    ~Matrix() {}
+    ~Matrix()
+    {}
 
     int getRows() const;
 
@@ -47,11 +48,13 @@ public:
 
     Matrix &operator+=(const Matrix &other);
 
+    void setValue(int i, int j, float val);
+
     float operator()(int i, int j) const;
 
     float operator[](int i) const;
 
-    friend istream &operator>>(istream &is, const Matrix &m);
+    friend ifstream &operator>>(ifstream &is, Matrix &m);
 
     friend ostream &operator<<(ostream &os, const Matrix &m);
 

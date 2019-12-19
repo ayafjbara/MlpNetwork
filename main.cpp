@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "Matrix.h"
-#include "activation.h"
+#include "Activation.h"
 #include "Dense.h"
 #include "MlpNetwork.h"
 
@@ -43,7 +43,7 @@ void usage()
 bool readFileToMatrix(const std::string &filePath, Matrix &mat)
 {
     std::ifstream is;
-    is.open("C:\\Users\\97250\\Desktop\\MlpNetwork\\files\\parameters\\w1", std::ios::in | std::ios::binary | std::ios::ate);
+    is.open("/cs/usr/ayaj/Desktop/EX1-Cpp/files/parameters/w1", std::ios::in | std::ios::binary | std::ios::ate);
     if (!is.is_open())
     {
         return false;
