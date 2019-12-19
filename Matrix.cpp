@@ -17,7 +17,7 @@ Matrix::Matrix(int rows, int cols)
     }
 }
 
-Matrix::Matrix(Matrix &m)
+Matrix::Matrix(const Matrix &m)
 {
     int rows = m.getRows();
     int cols = m.getCols();
@@ -160,7 +160,8 @@ ifstream &operator>>(ifstream &is, Matrix &m)
                 float f = strtof(s, NULL);
                 m.setValue(i, j, f);
                 cout << f << "\n";
-            } else{
+            } else
+            {
                 //todo is not valid
             }
         }
@@ -238,4 +239,9 @@ Matrix operator*(float c, const Matrix &a)
 void Matrix::setValue(int i, int j, float val)
 {
     matrix[i][j] = val;
+}
+
+float &Matrix::operator()(int i, int j)
+{
+    return matrix[i][j];
 }

@@ -2,6 +2,8 @@
 #ifndef ACTIVATION_H
 #define ACTIVATION_H
 
+#include "Matrix.h"
+
 /**
  * @enum ActivationType
  * @brief Indicator of activation function.
@@ -13,12 +15,21 @@ enum ActivationType
 };
 
 // Insert Activation class here...
-class Activation{
+class Activation
+{
 public:
     Activation(ActivationType actType);
+
     enum ActivationType getActivationType();
-    float operator()(int input); //todo change input type
+
+    Matrix operator()(const Matrix &input);
+
+    Matrix relu(const Matrix &input);
+
+    Matrix softmax(const Matrix &input);
+
 private:
     enum ActivationType activationType;
 };
+
 #endif //ACTIVATION_H

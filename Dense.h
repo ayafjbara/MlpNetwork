@@ -8,12 +8,23 @@
 
 #include "Activation.h"
 
-class Dense {
+class Dense
+{
 public:
-//    Dense(w, bias, ActivationType);
-//    getWeights();
-//    getBias();
-//    Activation getActivation();
+    Dense(Matrix &w, Matrix &bias, ActivationType activationType);
+
+    Matrix getWeights() const;
+
+    Matrix getBias() const;
+
+    ActivationType getActivation() const;
+
+    Matrix operator()(const Matrix &input);
+private:
+
+    ActivationType activationType;
+    Matrix weights;
+    Matrix bias;
 };
 
 

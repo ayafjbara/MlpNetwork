@@ -23,7 +23,7 @@ class Matrix
 public:
     Matrix(int rows, int cols);
 
-    Matrix(Matrix &m);
+    Matrix(const Matrix &m);
 
     Matrix();
 
@@ -51,6 +51,8 @@ public:
     void setValue(int i, int j, float val);
 
     float operator()(int i, int j) const;
+
+    float &operator()(int i, int j);
 
     float operator[](int i) const;
 
