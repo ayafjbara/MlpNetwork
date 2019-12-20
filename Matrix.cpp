@@ -76,12 +76,8 @@ void Matrix::plainPrint() const
     {
         for (int j = 0; j < matrixDims.cols; ++j)
         {
-            cout << _getValue(i, j);
-            if (j != matrixDims.cols - 1)
-            {
-                cout << " ";
-            }
-            else
+            cout << _getValue(i, j)<<" ";
+            if (j == matrixDims.cols - 1)
             {
                 cout << "\n";
             }
@@ -138,13 +134,13 @@ Matrix &Matrix::operator+=(const Matrix &other)
     return *this;
 }
 
-/** value of a(i, j) */
+/** value of matrix(i, j) */
 float Matrix::operator()(int i, int j) const
 {
     return _getValue(i, j);
 }
 
-/** value of a[i] */
+/** value of matrix[i] */
 float Matrix::operator[](int i) const
 {
     return matrix[i];
@@ -163,7 +159,8 @@ ifstream &operator>>(ifstream &is, Matrix &m)
                 float f;
                 is.read(reinterpret_cast<char *>(&f), sizeof(float));
                 m(i, j) = f;
-            } else
+            }
+            else
             {
                 cerr << "ERROR: " << endl;
                 exit(1);
@@ -183,7 +180,8 @@ ostream &operator<<(ostream &os, const Matrix &m)
             if (m(i, j) <= 0.1)
             {
                 os << "  ";
-            } else
+            }
+            else
             {
                 os << "**";
             }
@@ -239,7 +237,7 @@ Matrix operator*(float c, const Matrix &a)
     return a * c;
 }
 
-/** reference of a(i,j) */
+/** reference of matrix(i,j) */
 float &Matrix::operator()(int i, int j)
 {
     return matrix[i * matrixDims.cols + j];
@@ -249,4 +247,16 @@ float &Matrix::operator()(int i, int j)
 float Matrix::_getValue(int i, int j) const
 {
     return matrix[i * matrixDims.cols + j];
+}
+
+/** reference of matrix[i] */
+float &Matrix::operator[](int i)
+{
+    return matrix[i];
+}
+
+/** Destructor */
+Matrix::~Matrix()
+{
+    delete[] matrix;
 }

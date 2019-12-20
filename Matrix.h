@@ -78,14 +78,17 @@ public:
     /** a += other */
     Matrix &operator+=(const Matrix &other);
 
-    /** value of a(i, j) */
+    /** value of matrix(i, j) */
     float operator()(int i, int j) const;
 
-    /** reference of a(i,j) */
+    /** reference of matrix(i,j) */
     float &operator()(int i, int j);
 
-    /** value of a[i] */
+    /** value of matrix[i] */
     float operator[](int i) const;
+
+    /** reference of matrix[i] */
+    float &operator[](int i);
 
     /** Fills matrix elements */
     friend ifstream &operator>>(ifstream &is, Matrix &m);
