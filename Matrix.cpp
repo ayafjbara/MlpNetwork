@@ -50,7 +50,7 @@ void Matrix::plainPrint() const {
     {
         for (int j = 0; j < matrixDims.cols; ++j)
         {
-            cout << getValue(i,j);
+            cout << getValue(i, j);
             if (j != matrixDims.cols - 1)
                 cout << " ";
             else
@@ -66,7 +66,7 @@ Matrix &Matrix::operator=(const Matrix &other) {
         matrixDims.rows = other.getRows();
         matrixDims.cols = other.getCols();
         delete[] matrix; //todo
-        matrix = new float [matrixDims.rows*matrixDims.cols];
+        matrix = new float[matrixDims.rows * matrixDims.cols];
         for (int i = 0; i < matrixDims.rows; ++i)
         {
             for (int j = 0; j < matrixDims.cols; ++j)
@@ -85,7 +85,7 @@ Matrix Matrix::operator+(const Matrix &a) const {
     Matrix addMatrix = *new Matrix(rows, cols);
     for (int i = 0; i < rows; ++i)
         for (int j = 0; j < cols; ++j)
-            addMatrix(i, j) = getValue(i,j)+ a(i, j);
+            addMatrix(i, j) = getValue(i, j) + a(i, j);
 
     return addMatrix;
 }
@@ -99,7 +99,7 @@ Matrix &Matrix::operator+=(const Matrix &other) {
 }
 
 float Matrix::operator()(int i, int j) const {
-    return getValue(i,j);
+    return getValue(i, j);
 }
 
 float Matrix::operator[](int i) const {
@@ -120,9 +120,8 @@ ifstream &operator>>(ifstream &is, Matrix &m) {
         {
             if (is.good())
             {
-                s = new char[length];
-                is.read(s, length);
-                float f = strtof(s, NULL);
+                float f;
+                is.read(reinterpret_cast<char *>(&f), sizeof(float));
                 m(i, j) = f;
             } else
             {
@@ -160,7 +159,7 @@ Matrix Matrix::operator*(const Matrix &a) const {
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
             for (int k = 0; k < matrixDims.cols; k++)
-                multiMatrix(i, j) += getValue(i,k) * a(k, j);
+                multiMatrix(i, j) += getValue(i, k) * a(k, j);
 
     return multiMatrix;
 }
@@ -176,7 +175,7 @@ Matrix Matrix::operator*(float c) const {
     {
         for (int j = 0; j < cols; ++j)
         {
-            multiMatrix(i, j) = c * getValue(i,j);
+            multiMatrix(i, j) = c * getValue(i, j);
         }
     }
     return multiMatrix;
