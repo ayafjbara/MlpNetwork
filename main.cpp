@@ -25,8 +25,7 @@
 /**
  * Prints program usage to stdout.
  */
-void usage()
-{
+void usage() {
     std::cout << USAGE_MSG << std::endl;
 }
 
@@ -40,8 +39,7 @@ void usage()
  *          true - success
  *          false - failure
  */
-bool readFileToMatrix(const std::string &filePath, Matrix &mat)
-{
+bool readFileToMatrix(const std::string &filePath, Matrix &mat) {
     std::ifstream is;
     is.open(filePath, std::ios::in | std::ios::binary | std::ios::ate);
     if (!is.is_open())
@@ -72,8 +70,7 @@ bool readFileToMatrix(const std::string &filePath, Matrix &mat)
  * @param biases array of matrix, biases[i] is the i'th layer bias matrix
  *          (which is actually a vector)
  */
-void loadParameters(char *paths[ARGS_COUNT], Matrix weights[MLP_SIZE], Matrix biases[MLP_SIZE])
-{
+void loadParameters(char *paths[ARGS_COUNT], Matrix weights[MLP_SIZE], Matrix biases[MLP_SIZE]) {
     for (int i = 0; i < MLP_SIZE; i++)
     {
         weights[i] = Matrix(weightsDims[i].rows, weightsDims[i].cols);
@@ -102,8 +99,7 @@ void loadParameters(char *paths[ARGS_COUNT], Matrix weights[MLP_SIZE], Matrix bi
  * Exits (code == 1) on fatal errors: unable to read user input path.
  * @param mlp MlpNetwork to use in order to predict img.
  */
-void mlpCli(MlpNetwork &mlp)
-{
+void mlpCli(MlpNetwork &mlp) {
     Matrix img(imgDims.rows, imgDims.cols);
     std::string imgPath;
 
@@ -146,8 +142,7 @@ void mlpCli(MlpNetwork &mlp)
  * @param argv args values
  * @return program exit status code
  */
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     if (argc != ARGS_COUNT)
     {
         usage();
