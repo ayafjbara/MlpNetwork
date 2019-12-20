@@ -23,7 +23,7 @@ public:
 private:
 
     ActivationType activationType;
-    Matrix weights;
+    Matrix weight;
     Matrix bias;
 };
 

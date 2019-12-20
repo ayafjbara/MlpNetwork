@@ -22,10 +22,13 @@ class MlpNetwork
 {
 public:
     MlpNetwork(Matrix weights[], Matrix biases[]);
-//    Digit operator()(int i, int j);//todo change input
+
+    Digit operator()(Matrix &input);//todo change input
 private:
-    Matrix weights[4];
-    Matrix biases[4];
+    Matrix *weights;
+    Matrix *biases;
+
+    Digit getMaxProb(Matrix &probs) const;
 };
 
 #endif // MLPNETWORK_H

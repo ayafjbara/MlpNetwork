@@ -12,7 +12,7 @@
 #define ERROR_INVALID_IMG "Error: invalid image path or size: "
 #define USAGE_MSG "Usage:\n" \
                   "\t./mlpnetwork w1 w2 w3 w4 b1 b2 b3 b4\n" \
-                  "\twi - the i'th layer's weights\n" \
+                  "\twi - the i'th layer's weight\n" \
                   "\tbi - the i'th layer's biases"
 
 
@@ -43,18 +43,18 @@ void usage()
 bool readFileToMatrix(const std::string &filePath, Matrix &mat)
 {
     std::ifstream is;
-    is.open("/cs/usr/ayaj/Desktop/EX1-Cpp/files/parameters/w1", std::ios::in | std::ios::binary | std::ios::ate);
+    is.open(filePath, std::ios::in | std::ios::binary | std::ios::ate);
     if (!is.is_open())
     {
         return false;
     }
 
     long int matByteSize = (long int) mat.getCols() * mat.getRows() * sizeof(float);
-    if (is.tellg() != matByteSize)
-    {
-        is.close();
-        return false;
-    }
+//    if (is.tellg() != matByteSize)
+//    {
+//        is.close();
+//        return false;
+//    }
 
     is.seekg(0, std::ios_base::beg);
     is >> mat;
@@ -63,12 +63,12 @@ bool readFileToMatrix(const std::string &filePath, Matrix &mat)
 }
 
 /**
- * Loads MLP parameters from weights & biases paths
+ * Loads MLP parameters from weight & biases paths
  * to Weights[] and Biases[].
  * Exits (code == 1) upon failures.
  * @param paths array of programs arguments, expected to be mlp parameters
  *        path.
- * @param weights array of matrix, weigths[i] is the i'th layer weights matrix
+ * @param weights array of matrix, weigths[i] is the i'th layer weight matrix
  * @param biases array of matrix, biases[i] is the i'th layer bias matrix
  *          (which is actually a vector)
  */
@@ -120,11 +120,11 @@ void mlpCli(MlpNetwork &mlp)
         if (readFileToMatrix(imgPath, img))
         {
             Matrix imgVec = img;
-//            Digit output = mlp(imgVec.vectorize());
-//            std::cout << "Image processed:" << std::endl
-//                      << img << std::endl;
-//            std::cout << "Mlp result: " << output.value <<
-//                      " at probability: " << output.probability << std::endl;
+            Digit output = mlp(imgVec.vectorize());
+            std::cout << "Image processed:" << std::endl
+                      << img << std::endl;
+            std::cout << "Mlp result: " << output.value <<
+                      " at probability: " << output.probability << std::endl;
         } else
         {
             std::cout << ERROR_INVALID_IMG << imgPath << std::endl;
@@ -158,9 +158,9 @@ int main(int argc, char **argv)
     Matrix biases[MLP_SIZE];
     loadParameters(argv, weights, biases);
 
-//    MlpNetwork mlp(weights, biases);
-//
-//    mlpCli(mlp);
+    MlpNetwork mlp(weights, biases);
+
+    mlpCli(mlp);
 
 
     return EXIT_SUCCESS;

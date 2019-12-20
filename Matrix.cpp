@@ -6,84 +6,51 @@
 #include <math.h>
 #include "Matrix.h"
 
-Matrix::Matrix(int rows, int cols)
-{
+Matrix::Matrix(int rows, int cols) {
     matrixDims.cols = cols;
     matrixDims.rows = rows;
-    for (int i = 0; i < rows; ++i)
-    {
-        vector<float> row(cols, 0);
-        matrix.push_back(row);
-    }
+    matrix = new float[rows * cols];
 }
 
-Matrix::Matrix(const Matrix &m)
-{
-    int rows = m.getRows();
-    int cols = m.getCols();
-    Matrix(rows, cols);
-    for (int i = 0; i < rows; ++i)
-        for (int j = 0; j < cols; ++j)
-            matrix[i][j] = m(i, j);
-}
-
-Matrix::Matrix(vector<vector<float>> &matrix, int rows, int cols)
-{
-    this->matrix = matrix;
-    matrixDims.cols = cols;
-    matrixDims.rows = rows;
-}
-
-Matrix::Matrix()
-{
-    Matrix(1, 1);
-}
-
-int Matrix::getRows() const
-{
-    return this->matrixDims.rows;
-}
-
-int Matrix::getCols() const
-{
-    return this->matrixDims.cols;
-}
-
-vector<vector<float> > Matrix::getMatrix() const
-{
-    return matrix;
-}
-
-void Matrix::setMatrix(vector<vector<float>> matrix)
-{
-    this->matrix = matrix;
-}
-
-Matrix &Matrix::vectorize()
-{
-    int curRows = matrixDims.rows;
-    int curCols = matrixDims.cols;
-    vector<vector<float >> matVector(curCols * curRows, vector<float>(1, 0));
-    int idx = 0;
-    for (int i = 0; i < curRows; ++i)
-        for (int j = 0; j < curCols; ++j)
-        {
-            matVector[idx][0] = matrix[i][j];
-            idx++;
-        }
-
-    matrixDims.rows *= curCols;
-    matrixDims.cols = 1;
-    matrix = matVector;
-}
-
-void Matrix::plainPrint() const
-{
+Matrix::Matrix(const Matrix &m) {
+    matrixDims.rows = m.getRows();
+    matrixDims.cols = m.getCols();
+    matrix = new float[matrixDims.rows * matrixDims.cols];
     for (int i = 0; i < matrixDims.rows; ++i)
     {
         for (int j = 0; j < matrixDims.cols; ++j)
         {
-            cout << matrix[i][j];
+            matrix[i * matrixDims.cols + j] = m(i, j);
+        }
+    }
+}
+
+Matrix::Matrix() {
+    matrixDims.cols = 1;
+    matrixDims.rows = 1;
+    matrix = new float[1];
+}
+
+int Matrix::getRows() const {
+    return this->matrixDims.rows;
+}
+
+int Matrix::getCols() const {
+    return this->matrixDims.cols;
+}
+
+Matrix &Matrix::vectorize() {
+    matrixDims.rows *= matrixDims.cols;
+    matrixDims.cols = 1;
+    return *this;
+}
+
+void Matrix::plainPrint() const {
+    for (int i = 0; i < matrixDims.rows; ++i)
+    {
+        for (int j = 0; j < matrixDims.cols; ++j)
+        {
+            cout << getValue(i,j);
             if (j != matrixDims.cols - 1)
                 cout << " ";
             else
@@ -92,62 +59,60 @@ void Matrix::plainPrint() const
     }
 }
 
-Matrix &Matrix::operator=(const Matrix &other)
-{
+Matrix &Matrix::operator=(const Matrix &other) {
     if (this != &other)
     {
+
         matrixDims.rows = other.getRows();
         matrixDims.cols = other.getCols();
-        vector<vector<float >> copiedMatrix(other.getMatrix());
-        matrix = copiedMatrix;
+        delete[] matrix; //todo
+        matrix = new float [matrixDims.rows*matrixDims.cols];
+        for (int i = 0; i < matrixDims.rows; ++i)
+        {
+            for (int j = 0; j < matrixDims.cols; ++j)
+            {
+                matrix[i * matrixDims.cols + j] = other(i, j);
+            }
+        }
     }
     return *this;
 }
 
 
-Matrix Matrix::operator+(const Matrix &a) const
-{
+Matrix Matrix::operator+(const Matrix &a) const {
     int rows = matrixDims.rows;
     int cols = matrixDims.cols;
-    vector<vector<float >> addMatrix(rows, vector<float>(cols, 0));
+    Matrix addMatrix = *new Matrix(rows, cols);
     for (int i = 0; i < rows; ++i)
         for (int j = 0; j < cols; ++j)
-            addMatrix[i][j] = matrix[i][j] + a(i, j);
+            addMatrix(i, j) = getValue(i,j)+ a(i, j);
 
-    return *new Matrix(addMatrix, rows, cols);
+    return addMatrix;
 }
 
-Matrix &Matrix::operator+=(const Matrix &other)
-{
+Matrix &Matrix::operator+=(const Matrix &other) {
     for (int i = 0; i < matrixDims.rows; ++i)
         for (int j = 0; j < matrixDims.cols; ++j)
-            matrix[i][j] += other(i, j);
+            matrix[i * matrixDims.cols + j] += other(i, j);
+
     return *this;
 }
 
-float Matrix::operator()(int i, int j) const
-{
-    return matrix[i][j];
+float Matrix::operator()(int i, int j) const {
+    return getValue(i,j);
 }
 
-float Matrix::operator[](int i) const
-{
-    for (int j = 0; j < matrixDims.rows; ++j)
-    {
-        float idx = (i - j) / matrixDims.rows;
-        if (roundf(idx) == idx)
-            return matrix[idx][j];
-    }
+float Matrix::operator[](int i) const {
+    return matrix[i];
 }
 
 
-ifstream &operator>>(ifstream &is, Matrix &m)
-{
+ifstream &operator>>(ifstream &is, Matrix &m) {
 
     int rows = m.getRows();
     int cols = m.getCols();
     int length = sizeof(float);
-    char* s;
+    char *s;
 
     for (int i = 0; i < rows; ++i)
     {
@@ -158,20 +123,18 @@ ifstream &operator>>(ifstream &is, Matrix &m)
                 s = new char[length];
                 is.read(s, length);
                 float f = strtof(s, NULL);
-                m.setValue(i, j, f);
-                cout << f << "\n";
+                m(i, j) = f;
             } else
             {
-                //todo is not valid
+                cerr << "ERROR: " << endl;
+                exit(1);
             }
         }
     }
     return is;
 }
 
-ostream &operator<<(ostream &os, const Matrix &m)
-{
-    os << "Image processed :" << "\n";
+ostream &operator<<(ostream &os, const Matrix &m) {
     for (int i = 0; i < m.getRows(); ++i)
     {
         for (int j = 0; j < m.getCols(); ++j)
@@ -187,61 +150,50 @@ ostream &operator<<(ostream &os, const Matrix &m)
         os << "\n";
     }
     os << "\n";
-    os << "Mlp result: <res > at probability: <prob>";//todo res and prob
-    os << "\n";
     return os;
 }
 
-Matrix Matrix::operator*(const Matrix &a) const
-{
-    int newMatRows = matrixDims.rows;
-    int newMatCols = a.getCols();
-    vector<vector<float >> multiMatrix(newMatRows, vector<float>(newMatCols, 0));
-    vector<vector<float >> aMartrix = a.getMatrix();
-    for (int i = 0; i < newMatRows; i++)
-        for (int j = 0; j < newMatCols; j++)
+Matrix Matrix::operator*(const Matrix &a) const {
+    int rows = matrixDims.rows;
+    int cols = a.getCols();
+    Matrix multiMatrix = *new Matrix(rows, cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
             for (int k = 0; k < matrixDims.cols; k++)
-                multiMatrix[i][j] += matrix[i][k] * aMartrix[k][j];
+                multiMatrix(i, j) += getValue(i,k) * a(k, j);
 
-    return *new Matrix(aMartrix, newMatRows, newMatCols);
+    return multiMatrix;
 }
 
 /**
  * (Matrix * scalar)
  */
-Matrix Matrix::operator*(float c) const
-{
+Matrix Matrix::operator*(float c) const {
     int rows = matrixDims.rows;
     int cols = matrixDims.cols;
-    vector<vector<float >> multiMatrix(rows, vector<float>(cols, 0));
+    Matrix multiMatrix = *new Matrix(rows, cols);
     for (int i = 0; i < rows; ++i)
     {
         for (int j = 0; j < cols; ++j)
         {
-            multiMatrix[i][j] = c * matrix[i][j];
+            multiMatrix(i, j) = c * getValue(i,j);
         }
     }
-    return *new Matrix(multiMatrix, rows, cols);
+    return multiMatrix;
 }
 
 /**
  * (scalar * Matrix)
  */
-Matrix operator*(float c, const Matrix &a)
-{
+Matrix operator*(float c, const Matrix &a) {
     return a * c;
 }
 
-/**
- *
- * set val in Mat(i,j)
- */
-void Matrix::setValue(int i, int j, float val)
-{
-    matrix[i][j] = val;
+
+float &Matrix::operator()(int i, int j) {
+    return matrix[i * matrixDims.cols + j];
 }
 
-float &Matrix::operator()(int i, int j)
-{
-    return matrix[i][j];
+float Matrix::getValue(int i, int j) const {
+    return matrix[i * matrixDims.cols + j];
 }

@@ -27,8 +27,7 @@ public:
 
     Matrix();
 
-    ~Matrix()
-    {}
+    ~Matrix() {};//todo
 
     int getRows() const;
 
@@ -48,11 +47,9 @@ public:
 
     Matrix &operator+=(const Matrix &other);
 
-    void setValue(int i, int j, float val);
-
     float operator()(int i, int j) const;
 
-    float &operator()(int i, int j);
+    float &operator()(int i, int j) ;
 
     float operator[](int i) const;
 
@@ -62,15 +59,11 @@ public:
 
     friend Matrix operator*(float c, const Matrix &a);
 
-    vector<vector<float>> getMatrix() const;
-
 private:
     struct MatrixDims matrixDims;
-    vector<vector<float >> matrix;
+    float *matrix;
 
-    Matrix(vector<vector<float>> &matrix, int rows, int cols);
-
-    void setMatrix(vector<vector<float>> matrix);
+    float getValue(int i, int j) const;
 };
 
 #endif //MATRIX_H

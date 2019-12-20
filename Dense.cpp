@@ -8,12 +8,12 @@ Dense::Dense(Matrix &w, Matrix &bias, ActivationType activationType)
 {
     this->activationType = activationType;
     this->bias = bias;
-    this->weights = w;
+    this->weight = w;
 }
 
 Matrix Dense::getWeights() const
 {
-    return weights;
+    return weight;
 }
 
 Matrix Dense::getBias() const
@@ -28,7 +28,7 @@ ActivationType Dense::getActivation() const
 
 Matrix Dense::operator()(const Matrix &input)
 {
-    Matrix dense = weights * input + bias;
+    Matrix dense = weight * input + bias;
     return dense;
 }
 
