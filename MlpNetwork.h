@@ -3,8 +3,8 @@
 #ifndef MLPNETWORK_H
 #define MLPNETWORK_H
 
-#include "Matrix.h"
 #include "Digit.h"
+#include "Dense.h"
 
 #define MLP_SIZE 4
 
@@ -23,7 +23,7 @@ class MlpNetwork
 public:
     MlpNetwork(Matrix weights[], Matrix biases[]);
 
-    Digit operator()(Matrix &input);//todo change input
+    Digit operator()(Matrix &input);
 private:
     Matrix *weights;
     Matrix *biases;

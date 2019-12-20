@@ -2,8 +2,6 @@
 // Created by Aya on 12/15/2019.
 //
 
-#include <iostream>
-#include <math.h>
 #include "Matrix.h"
 
 Matrix::Matrix(int rows, int cols) {
@@ -62,7 +60,6 @@ void Matrix::plainPrint() const {
 Matrix &Matrix::operator=(const Matrix &other) {
     if (this != &other)
     {
-
         matrixDims.rows = other.getRows();
         matrixDims.cols = other.getCols();
         delete[] matrix; //todo
@@ -82,7 +79,7 @@ Matrix &Matrix::operator=(const Matrix &other) {
 Matrix Matrix::operator+(const Matrix &a) const {
     int rows = matrixDims.rows;
     int cols = matrixDims.cols;
-    Matrix addMatrix = *new Matrix(rows, cols);
+    Matrix addMatrix(rows, cols);
     for (int i = 0; i < rows; ++i)
         for (int j = 0; j < cols; ++j)
             addMatrix(i, j) = getValue(i, j) + a(i, j);
@@ -150,7 +147,7 @@ ostream &operator<<(ostream &os, const Matrix &m) {
 Matrix Matrix::operator*(const Matrix &a) const {
     int rows = matrixDims.rows;
     int cols = a.getCols();
-    Matrix multiMatrix = *new Matrix(rows, cols);
+    Matrix multiMatrix(rows, cols);
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
             for (int k = 0; k < matrixDims.cols; k++)
@@ -165,7 +162,7 @@ Matrix Matrix::operator*(const Matrix &a) const {
 Matrix Matrix::operator*(float c) const {
     int rows = matrixDims.rows;
     int cols = matrixDims.cols;
-    Matrix multiMatrix = *new Matrix(rows, cols);
+    Matrix multiMatrix(rows, cols);
     for (int i = 0; i < rows; ++i)
     {
         for (int j = 0; j < cols; ++j)

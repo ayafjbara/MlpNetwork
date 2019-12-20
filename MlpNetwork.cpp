@@ -2,9 +2,7 @@
 // Created by Aya on 12/15/2019.
 //
 
-#include <iostream>
 #include "MlpNetwork.h"
-#include "Dense.h"
 
 MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[]) {
     this->weights = weights;
@@ -12,11 +10,10 @@ MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[]) {
 }
 
 Digit MlpNetwork::operator()(Matrix &input) {
-    Activation reluctivation = *new Activation(Relu);
-    Activation softmaxActivation = *new Activation(Softmax);
+    Activation reluctivation(Relu);
+    Activation softmaxActivation(Softmax);
 
-
-    Dense dense = *new Dense(weights[0], biases[0], Relu);
+    Dense dense(weights[0], biases[0], Relu);
     Matrix r1 = reluctivation(dense(input));
 
     dense = *new Dense(weights[1], biases[1], Relu);

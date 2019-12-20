@@ -2,7 +2,6 @@
 // Created by Aya on 12/15/2019.
 //
 
-#include <cmath>
 #include "Activation.h"
 
 Activation::Activation(ActivationType actType)
@@ -28,7 +27,7 @@ Matrix Activation::operator()(const Matrix &input)
 
 Matrix Activation::relu(const Matrix &input)
 {
-    Matrix reluMat = Matrix(input);
+    Matrix reluMat(input);
 
     for (int i = 0; i < reluMat.getRows(); ++i)
     {
@@ -38,7 +37,6 @@ Matrix Activation::relu(const Matrix &input)
             {
                 reluMat(i, j) = 0;
             }
-
         }
     }
     return reluMat;
@@ -46,7 +44,7 @@ Matrix Activation::relu(const Matrix &input)
 
 Matrix Activation::softmax(const Matrix &input)
 {
-    Matrix softmaxMat = Matrix(input);
+    Matrix softmaxMat(input);
 
     float divisor = 0;
 
@@ -57,7 +55,6 @@ Matrix Activation::softmax(const Matrix &input)
             divisor += exp(softmaxMat(i, j));
         }
     }
-
     return softmaxMat * (1 / divisor);
 }
 

@@ -4,6 +4,8 @@
 #define MATRIX_H
 
 #include <vector>
+#include <iostream>
+#include <math.h>
 #include <fstream>
 
 
@@ -49,7 +51,7 @@ public:
 
     float operator()(int i, int j) const;
 
-    float &operator()(int i, int j) ;
+    float &operator()(int i, int j);
 
     float operator[](int i) const;
 
