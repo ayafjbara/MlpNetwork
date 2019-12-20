@@ -1,7 +1,3 @@
-//
-// Created by Aya on 12/15/2019.
-//
-
 #include "Matrix.h"
 
 /**
@@ -76,7 +72,7 @@ void Matrix::plainPrint() const
     {
         for (int j = 0; j < matrixDims.cols; ++j)
         {
-            cout << _getValue(i, j)<<" ";
+            cout << _getValue(i, j) << " ";
             if (j == matrixDims.cols - 1)
             {
                 cout << "\n";
