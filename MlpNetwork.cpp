@@ -2,6 +2,7 @@
 // Created by Aya on 12/15/2019.
 //
 
+#include <iostream>
 #include "MlpNetwork.h"
 #include "Dense.h"
 
@@ -18,14 +19,11 @@ Digit MlpNetwork::operator()(Matrix &input) {
     Dense dense = *new Dense(weights[0], biases[0], Relu);
     Matrix r1 = reluctivation(dense(input));
 
-
     dense = *new Dense(weights[1], biases[1], Relu);
     Matrix r2 = reluctivation(dense(r1));
 
-
     dense = *new Dense(weights[2], biases[2], Relu);
     Matrix r3 = reluctivation(dense(r2));
-
 
     dense = *new Dense(weights[3], biases[3], Softmax);
     Matrix r4 = softmaxActivation(dense(r3));

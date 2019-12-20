@@ -109,14 +109,9 @@ float Matrix::operator[](int i) const {
 
 ifstream &operator>>(ifstream &is, Matrix &m) {
 
-    int rows = m.getRows();
-    int cols = m.getCols();
-    int length = sizeof(float);
-    char *s;
-
-    for (int i = 0; i < rows; ++i)
+    for (int i = 0; i < m.getRows(); ++i)
     {
-        for (int j = 0; j < cols; ++j)
+        for (int j = 0; j < m.getCols(); ++j)
         {
             if (is.good())
             {

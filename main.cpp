@@ -50,11 +50,11 @@ bool readFileToMatrix(const std::string &filePath, Matrix &mat)
     }
 
     long int matByteSize = (long int) mat.getCols() * mat.getRows() * sizeof(float);
-//    if (is.tellg() != matByteSize)
-//    {
-//        is.close();
-//        return false;
-//    }
+    if (is.tellg() != matByteSize)
+    {
+        is.close();
+        return false;
+    }
 
     is.seekg(0, std::ios_base::beg);
     is >> mat;
