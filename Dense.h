@@ -8,18 +8,40 @@
 
 #include "Activation.h"
 
+/**
+ * Dense class
+ */
 class Dense
 {
 public:
+    /**
+     * Inits layer.
+     * @param w weight
+     * @param bias
+     * @param activationType
+     */
     Dense(Matrix &w, Matrix &bias, ActivationType activationType);
 
+    /**
+     * @return weights of this layer.
+     */
     Matrix getWeights() const;
 
+    /**
+     * @return bias of this layer.
+     */
     Matrix getBias() const;
 
+    /**
+     * @return activation of this layer.
+     */
     ActivationType getActivation() const;
 
+    /**
+     * Applies the layer on input.
+     */
     Matrix operator()(const Matrix &input);
+
 private:
 
     ActivationType activationType;

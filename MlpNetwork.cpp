@@ -4,12 +4,24 @@
 
 #include "MlpNetwork.h"
 
-MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[]) {
+/**
+ * Constructs the network.
+ * @param weights - array of 4 weights
+ * @param biases - array of 4 biases
+ */
+MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[])
+{
     this->weights = weights;
     this->biases = biases;
 }
 
-Digit MlpNetwork::operator()(Matrix &input) {
+/**
+ * Applies the entire network on input.
+ * @param input
+ * @return Digit struct of the predicted num and prob.
+ */
+Digit MlpNetwork::operator()(Matrix &input)
+{
     Activation reluctivation(Relu);
     Activation softmaxActivation(Softmax);
 
@@ -25,15 +37,23 @@ Digit MlpNetwork::operator()(Matrix &input) {
     dense = *new Dense(weights[3], biases[3], Softmax);
     Matrix r4 = softmaxActivation(dense(r3));
 
-    return getMaxProb(r4);
+    return _getMaxProb(r4);
 }
 
-Digit MlpNetwork::getMaxProb(Matrix &probs) const {
+/**
+ *
+ * @param probs
+ * @return object of type Digit. who has the max prob.
+ */
+Digit MlpNetwork::_getMaxProb(Matrix &probs) const
+{
     Digit maxDigit = {0, probs(0, 1)};
     for (unsigned int i = 1; i < 10; ++i)
     {
         if (maxDigit.probability < probs(i, 1))
+        {
             maxDigit = {i, probs(i, 1)};
+        }
     }
     return maxDigit;
 }

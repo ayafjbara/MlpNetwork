@@ -4,16 +4,23 @@
 
 #include "Activation.h"
 
+/**
+ * @param actType Relu/Softmax
+ */
 Activation::Activation(ActivationType actType)
 {
     activationType = actType;
 }
 
+/**
+ * @return activation type.
+ */
 enum ActivationType Activation::getActivationType()
 {
     return activationType;
 }
 
+/**  Applies activation function on input.*/
 Matrix Activation::operator()(const Matrix &input)
 {
     switch (activationType)
@@ -23,8 +30,11 @@ Matrix Activation::operator()(const Matrix &input)
         case Softmax:
             return softmax(input);
     }
+    cerr << "ERROR: " << endl;
+    exit(1);
 }
 
+/** Applies Relu activation function on input.*/
 Matrix Activation::relu(const Matrix &input)
 {
     Matrix reluMat(input);
@@ -42,6 +52,7 @@ Matrix Activation::relu(const Matrix &input)
     return reluMat;
 }
 
+/** Applies Softmax activation function on input.*/
 Matrix Activation::softmax(const Matrix &input)
 {
     Matrix softmaxMat(input);

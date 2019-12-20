@@ -14,18 +14,29 @@ enum ActivationType
     Softmax
 };
 
-// Insert Activation class here...
+/**
+ * Activation class
+ */
 class Activation
 {
 public:
+    /**
+     * @param actType Relu/Softmax
+     */
     Activation(ActivationType actType);
 
+    /**
+     * @return activation type.
+     */
     enum ActivationType getActivationType();
 
+    /**  Applies activation function on input.*/
     Matrix operator()(const Matrix &input);
 
+    /** Applies Relu activation function on input.*/
     Matrix relu(const Matrix &input);
 
+    /** Applies Softmax activation function on input.*/
     Matrix softmax(const Matrix &input);
 
 private:
