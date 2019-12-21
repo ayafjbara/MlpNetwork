@@ -33,14 +33,14 @@ public:
     /**  Applies activation function on input.*/
     Matrix operator()(const Matrix &input);
 
-    /** Applies Relu activation function on input.*/
-    Matrix relu(const Matrix &input);
-
-    /** Applies Softmax activation function on input.*/
-    Matrix softmax(const Matrix &input);
-
 private:
     enum ActivationType activationType;
+
+    /** Applies Relu activation function on input.*/
+    Matrix _relu(const Matrix &input);
+
+    /** Applies Softmax activation function on input.*/
+    Matrix _softmax(const Matrix &input);
 };
 
 #endif //ACTIVATION_H

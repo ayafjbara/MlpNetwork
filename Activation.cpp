@@ -22,16 +22,16 @@ Matrix Activation::operator()(const Matrix &input)
     switch (activationType)
     {
         case Relu:
-            return relu(input);
+            return _relu(input);
         case Softmax:
-            return softmax(input);
+            return _softmax(input);
     }
     cerr << "ERROR: " << endl;
     exit(1);
 }
 
 /** Applies Relu activation function on input.*/
-Matrix Activation::relu(const Matrix &input)
+Matrix Activation::_relu(const Matrix &input)
 {
     Matrix reluMat(input);
 
@@ -49,7 +49,7 @@ Matrix Activation::relu(const Matrix &input)
 }
 
 /** Applies Softmax activation function on input.*/
-Matrix Activation::softmax(const Matrix &input)
+Matrix Activation::_softmax(const Matrix &input)
 {
     Matrix softmaxMat(input);
 
@@ -59,7 +59,9 @@ Matrix Activation::softmax(const Matrix &input)
     {
         for (int j = 0; j < softmaxMat.getCols(); ++j)
         {
-            divisor += exp(softmaxMat(i, j));
+            float expCoor = exp(softmaxMat(i, j));
+            softmaxMat(i, j) = expCoor;
+            divisor += expCoor;
         }
     }
     return softmaxMat * (1 / divisor);
