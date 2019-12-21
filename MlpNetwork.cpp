@@ -43,12 +43,12 @@ Digit MlpNetwork::operator()(Matrix &input)
  */
 Digit MlpNetwork::_getMaxProb(Matrix &probs) const
 {
-    Digit maxDigit = {0, probs(0, 1)};
+    Digit maxDigit = {0, probs(0, 0)};
     for (unsigned int i = 1; i < 10; ++i)
     {
-        if (maxDigit.probability < probs(i, 1))
+        if (maxDigit.probability < probs(i, 0))
         {
-            maxDigit = {i, probs(i, 1)};
+            maxDigit = {i, probs(i, 0)};
         }
     }
     return maxDigit;

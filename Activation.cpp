@@ -26,7 +26,7 @@ Matrix Activation::operator()(const Matrix &input)
         case Softmax:
             return _softmax(input);
     }
-    cerr << "ERROR: " << endl;
+    cerr << "ERROR: Activation::operator(); wrong activation type." << endl;
     exit(1);
 }
 
@@ -52,7 +52,6 @@ Matrix Activation::_relu(const Matrix &input)
 Matrix Activation::_softmax(const Matrix &input)
 {
     Matrix softmaxMat(input);
-
     float divisor = 0;
 
     for (int i = 0; i < softmaxMat.getRows(); ++i)

@@ -88,7 +88,7 @@ Matrix &Matrix::operator=(const Matrix &other)
     {
         matrixDims.rows = other.getRows();
         matrixDims.cols = other.getCols();
-        delete[] matrix; //todo
+        delete[] matrix;
         matrix = new float[matrixDims.rows * matrixDims.cols];
         for (int i = 0; i < matrixDims.rows; ++i)
         {
@@ -151,15 +151,12 @@ float Matrix::operator()(int i, int j) const
 /** value of matrix[i] */
 float Matrix::operator[](int i) const
 {
-    try
-    {
-        return matrix[i];
-    }
-    catch (exception &e)
+    if (i < 0 || i >= matrixDims.cols * matrixDims.rows)
     {
         cerr << "Error: on Matrix::operator[]; index out of range" << endl;
         exit(1);
     }
+    return matrix[i];
 }
 
 /** Fills matrix elements */
@@ -244,7 +241,7 @@ Matrix Matrix::operator*(float c) const
     {
         for (int j = 0; j < cols; ++j)
         {
-            multiMatrix(i, j) = c * _getValue(i, j);
+            multiMatrix(i, j) = _getValue(i, j) * c;
         }
     }
     return multiMatrix;
@@ -255,49 +252,50 @@ Matrix Matrix::operator*(float c) const
  */
 Matrix operator*(float c, const Matrix &a)
 {
-    return a * c;
+    int rows = a.getRows();
+    int cols = a.getCols();
+    Matrix multiMatrix(rows, cols);
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
+            multiMatrix(i, j) = c * a(i, j);
+        }
+    }
+    return multiMatrix;
 }
 
 /** reference of matrix(i,j) */
 float &Matrix::operator()(int i, int j)
 {
-    try
-    {
-        return matrix[i * matrixDims.cols + j];
-    }
-    catch (exception &e)
+    if (i < 0 || i >= matrixDims.rows || j < 0 || j >= matrixDims.cols)
     {
         cerr << "Error: on Matrix::operator(); index out of range" << endl;
         exit(1);
     }
+    return matrix[i * matrixDims.cols + j];
 }
 
 /** value of matrix(i,j)*/
 float Matrix::_getValue(int i, int j) const
 {
-    try
-    {
-        return matrix[i * matrixDims.cols + j];
-    }
-    catch (exception &e)
+    if (i < 0 || i >= matrixDims.rows || j < 0 || j >= matrixDims.cols)
     {
         cerr << "Error: on Matrix::operator(); index out of range" << endl;
         exit(1);
     }
+    return matrix[i * matrixDims.cols + j];
 }
 
 /** reference of matrix[i] */
 float &Matrix::operator[](int i)
 {
-    try
-    {
-        return matrix[i];
-    }
-    catch (exception &e)
+    if (i < 0 || i >= matrixDims.cols * matrixDims.rows)
     {
         cerr << "Error: on Matrix::operator[]; index out of range" << endl;
         exit(1);
     }
+    return matrix[i];
 }
 
 /** Destructor */
