@@ -20,7 +20,7 @@ Digit MlpNetwork::operator()(Matrix &input)
 {
     Activation reluctivation(Relu);
     Activation softmaxActivation(Softmax);
-
+//todo delete used dense
     Dense dense(weights[0], biases[0], Relu);
     Matrix r1 = reluctivation(dense(input));
 

@@ -63,7 +63,7 @@ Matrix Activation::_softmax(const Matrix &input)
             divisor += expCoor;
         }
     }
-    return softmaxMat * (1 / divisor);
+    return ((1 / divisor) * softmaxMat);
 }
 
 
