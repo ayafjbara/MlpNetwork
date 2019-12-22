@@ -118,7 +118,7 @@ Matrix Matrix::operator+(const Matrix &a) const
     {
         for (int j = 0; j < cols; ++j)
         {
-            addMatrix(i, j) = _getValue(i, j) + a(i, j);
+            addMatrix(i, j) = (*this)(i, j) + a(i, j);
         }
     }
     return addMatrix;
@@ -170,10 +170,9 @@ ifstream &operator>>(ifstream &is, Matrix &m)
             if (is.good())
             {
                 float f;
-                is.read(reinterpret_cast<char *>(&f), sizeof(float));
+                is.read(reinterpret_cast<char*>(&f), sizeof(float));
                 m(i, j) = f;
-            }
-            else
+            } else
             {
                 cerr << "ERROR: " << endl;
                 exit(1);
@@ -193,8 +192,7 @@ ostream &operator<<(ostream &os, const Matrix &m)
             if (m(i, j) <= 0.1)
             {
                 os << "  ";
-            }
-            else
+            } else
             {
                 os << "**";
             }
@@ -252,17 +250,7 @@ Matrix Matrix::operator*(float c) const
  */
 Matrix operator*(float c, const Matrix &a)
 {
-    int rows = a.getRows();
-    int cols = a.getCols();
-    Matrix multiMatrix(rows, cols);
-    for (int i = 0; i < rows; ++i)
-    {
-        for (int j = 0; j < cols; ++j)
-        {
-            multiMatrix(i, j) = c * a(i, j);
-        }
-    }
-    return multiMatrix;
+    return a * c;
 }
 
 /** reference of matrix(i,j) */
