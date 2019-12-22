@@ -102,9 +102,6 @@ public:
 private:
     struct MatrixDims matrixDims;
     float *matrix;
-
-    /** value of matrix(i,j)*/
-    float _getValue(int i, int j) const;
 };
 
 #endif //MATRIX_H

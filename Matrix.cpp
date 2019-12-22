@@ -72,7 +72,7 @@ void Matrix::plainPrint() const
     {
         for (int j = 0; j < matrixDims.cols; ++j)
         {
-            cout << _getValue(i, j) << " ";
+            cout << (*this)(i, j) << " ";
             if (j == matrixDims.cols - 1)
             {
                 cout << "\n";
@@ -118,7 +118,7 @@ Matrix Matrix::operator+(const Matrix &a) const
     {
         for (int j = 0; j < cols; ++j)
         {
-            addMatrix(i, j) = (*this)(i, j) + a(i, j);
+            addMatrix(i, j) = (float) ((*this)(i, j) + a(i, j));
         }
     }
     return addMatrix;
@@ -136,7 +136,8 @@ Matrix &Matrix::operator+=(const Matrix &other)
     {
         for (int j = 0; j < matrixDims.cols; ++j)
         {
-            matrix[i * matrixDims.cols + j] += other(i, j);
+            float sum = (*this)(i, j) + other(i, j);
+            (*this)(i, j) = sum;
         }
     }
     return *this;
@@ -145,7 +146,7 @@ Matrix &Matrix::operator+=(const Matrix &other)
 /** value of matrix(i, j) */
 float Matrix::operator()(int i, int j) const
 {
-    return _getValue(i, j);
+    return matrix[i * matrixDims.cols + j];
 }
 
 /** value of matrix[i] */
@@ -199,7 +200,6 @@ ostream &operator<<(ostream &os, const Matrix &m)
         }
         os << "\n";
     }
-    os << "\n";
     return os;
 }
 
@@ -218,10 +218,12 @@ Matrix Matrix::operator*(const Matrix &a) const
     {
         for (int j = 0; j < cols; j++)
         {
+            float sum = 0;
             for (int k = 0; k < matrixDims.cols; k++)
             {
-                multiMatrix(i, j) += _getValue(i, k) * a(k, j);
+                sum += (float) ((*this)(i, k) * a(k, j));
             }
+            multiMatrix(i, j) = sum;
         }
     }
     return multiMatrix;
@@ -239,7 +241,7 @@ Matrix Matrix::operator*(float c) const
     {
         for (int j = 0; j < cols; ++j)
         {
-            multiMatrix(i, j) = _getValue(i, j) * c;
+            multiMatrix(i, j) = (float) ((*this)(i, j) * c);
         }
     }
     return multiMatrix;
@@ -250,22 +252,12 @@ Matrix Matrix::operator*(float c) const
  */
 Matrix operator*(float c, const Matrix &a)
 {
-    return a * c;
+    Matrix multi = a * c;
+    return multi;
 }
 
 /** reference of matrix(i,j) */
 float &Matrix::operator()(int i, int j)
-{
-    if (i < 0 || i >= matrixDims.rows || j < 0 || j >= matrixDims.cols)
-    {
-        cerr << "Error: on Matrix::operator(); index out of range" << endl;
-        exit(1);
-    }
-    return matrix[i * matrixDims.cols + j];
-}
-
-/** value of matrix(i,j)*/
-float Matrix::_getValue(int i, int j) const
 {
     if (i < 0 || i >= matrixDims.rows || j < 0 || j >= matrixDims.cols)
     {
