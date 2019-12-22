@@ -28,19 +28,19 @@ public:
     /**
      * @return activation type.
      */
-    enum ActivationType getActivationType();
+    enum ActivationType getActivationType() const;
 
     /**  Applies activation function on input.*/
-    Matrix operator()(const Matrix &input);
+    Matrix operator()(const Matrix &input) const;
 
 private:
     enum ActivationType activationType;
 
     /** Applies Relu activation function on input.*/
-    Matrix _relu(const Matrix &input);
+    Matrix _relu(const Matrix &input) const;
 
     /** Applies Softmax activation function on input.*/
-    Matrix _softmax(const Matrix &input);
+    Matrix _softmax(const Matrix &input) const;
 };
 
 #endif //ACTIVATION_H

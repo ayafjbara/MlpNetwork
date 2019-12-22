@@ -6,9 +6,13 @@
  */
 Matrix::Matrix(int rows, int cols)
 {
+    if (rows <= 0 || cols <= 0)
+    {
+        _printError("Error: on Matrix(rows, cols); invalid dimensions.");
+    }
     matrixDims.cols = cols;
     matrixDims.rows = rows;
-    matrix = new float[rows * cols];
+    matrix = new float[rows * cols]{0};
 }
 
 /**
@@ -18,7 +22,7 @@ Matrix::Matrix(const Matrix &matrix1)
 {
     matrixDims.rows = matrix1.getRows();
     matrixDims.cols = matrix1.getCols();
-    matrix = new float[matrixDims.rows * matrixDims.cols];
+    matrix = new float[matrixDims.rows * matrixDims.cols]{0};
     for (int i = 0; i < matrixDims.rows; ++i)
     {
         for (int j = 0; j < matrixDims.cols; ++j)
@@ -33,7 +37,7 @@ Matrix::Matrix()
 {
     matrixDims.cols = 1;
     matrixDims.rows = 1;
-    matrix = new float[1];
+    matrix = new float[1]{0};
 }
 
 /**
@@ -109,8 +113,7 @@ Matrix Matrix::operator+(const Matrix &a) const
 
     if (a.getRows() != rows || a.getCols() != cols)
     {
-        cerr << "Error: on Matrix::operator+; matrices dimensions is not equal." << endl;
-        exit(1);
+        _printError("Error: on Matrix::operator+; matrices dimensions is not equal.");
     }
 
     Matrix addMatrix(rows, cols);
@@ -129,8 +132,7 @@ Matrix &Matrix::operator+=(const Matrix &other)
 {
     if (other.getRows() != matrixDims.rows || other.getCols() != matrixDims.cols)
     {
-        cerr << "Error: on Matrix::operator+=; matrices dimensions is not equal." << endl;
-        exit(1);
+        _printError("Error: on Matrix::operator+=; matrices dimensions is not equal.");
     }
     for (int i = 0; i < matrixDims.rows; ++i)
     {
@@ -146,6 +148,10 @@ Matrix &Matrix::operator+=(const Matrix &other)
 /** value of matrix(i, j) */
 float Matrix::operator()(int i, int j) const
 {
+    if (i < 0 || i >= matrixDims.rows || j < 0 || j >= matrixDims.cols)
+    {
+        _printError("Error: on Matrix::operator(); index out of range");
+    }
     return matrix[i * matrixDims.cols + j];
 }
 
@@ -154,8 +160,7 @@ float Matrix::operator[](int i) const
 {
     if (i < 0 || i >= matrixDims.cols * matrixDims.rows)
     {
-        cerr << "Error: on Matrix::operator[]; index out of range" << endl;
-        exit(1);
+        _printError("Error: on Matrix::operator[]; index out of range");
     }
     return matrix[i];
 }
@@ -163,7 +168,6 @@ float Matrix::operator[](int i) const
 /** Fills matrix elements */
 ifstream &operator>>(ifstream &is, Matrix &m)
 {
-
     for (int i = 0; i < m.getRows(); ++i)
     {
         for (int j = 0; j < m.getCols(); ++j)
@@ -173,7 +177,8 @@ ifstream &operator>>(ifstream &is, Matrix &m)
                 float f;
                 is.read(reinterpret_cast<char*>(&f), sizeof(float));
                 m(i, j) = f;
-            } else
+            }
+            else
             {
                 cerr << "ERROR: " << endl;
                 exit(1);
@@ -190,10 +195,11 @@ ostream &operator<<(ostream &os, const Matrix &m)
     {
         for (int j = 0; j < m.getCols(); ++j)
         {
-            if (m(i, j) <= 0.1)
+            if (m(i, j) <= 0.1f)
             {
                 os << "  ";
-            } else
+            }
+            else
             {
                 os << "**";
             }
@@ -210,8 +216,7 @@ Matrix Matrix::operator*(const Matrix &a) const
     int cols = a.getCols();
     if (a.getRows() != matrixDims.cols)
     {
-        cerr << "Error: on Matrix::operator*; matrices dimensions are not compatible." << endl;
-        exit(1);
+        _printError("Error: on Matrix::operator*; matrices dimensions are not compatible.");
     }
     Matrix multiMatrix(rows, cols);
     for (int i = 0; i < rows; i++)
@@ -252,8 +257,7 @@ Matrix Matrix::operator*(float c) const
  */
 Matrix operator*(float c, const Matrix &a)
 {
-    Matrix multi = a * c;
-    return multi;
+    return (a * c);
 }
 
 /** reference of matrix(i,j) */
@@ -261,8 +265,7 @@ float &Matrix::operator()(int i, int j)
 {
     if (i < 0 || i >= matrixDims.rows || j < 0 || j >= matrixDims.cols)
     {
-        cerr << "Error: on Matrix::operator(); index out of range" << endl;
-        exit(1);
+        _printError("Error: on Matrix::operator(); index out of range");
     }
     return matrix[i * matrixDims.cols + j];
 }
@@ -272,8 +275,7 @@ float &Matrix::operator[](int i)
 {
     if (i < 0 || i >= matrixDims.cols * matrixDims.rows)
     {
-        cerr << "Error: on Matrix::operator[]; index out of range" << endl;
-        exit(1);
+        _printError("Error: on Matrix::operator[]; index out of range");
     }
     return matrix[i];
 }
@@ -282,4 +284,11 @@ float &Matrix::operator[](int i)
 Matrix::~Matrix()
 {
     delete[] matrix;
+}
+
+/** print error msg and exit(1)*/
+void Matrix::_printError(string errorMsg) const
+{
+    cerr << errorMsg << endl;
+    exit(1);
 }

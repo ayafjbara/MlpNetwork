@@ -40,7 +40,7 @@ public:
     /**
      * Applies the layer on input.
      */
-    Matrix operator()(const Matrix &input);
+    Matrix operator()(const Matrix &input) const;
 
 private:
 

@@ -40,10 +40,9 @@ ActivationType Dense::getActivation() const
 /**
  * Applies the layer on input.
  */
-Matrix Dense::operator()(const Matrix &input)
+Matrix Dense::operator()(const Matrix &input) const
 {
-    Matrix dense = weight * input + bias;
-    return dense;
+    return (weight * input + bias);
 }
 
 

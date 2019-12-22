@@ -101,7 +101,10 @@ public:
 
 private:
     struct MatrixDims matrixDims;
-    float *matrix;
+    float* matrix;
+
+    /** print error msg and exit(1)*/
+    void _printError(string errorMsg) const;
 };
 
 #endif //MATRIX_H

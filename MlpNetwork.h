@@ -39,8 +39,8 @@ public:
     Digit operator()(Matrix &input);
 
 private:
-    Matrix *weights;
-    Matrix *biases;
+    Matrix* weights;
+    Matrix* biases;
 
     /**
      *

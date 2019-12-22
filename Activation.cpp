@@ -11,13 +11,13 @@ Activation::Activation(ActivationType actType)
 /**
  * @return activation type.
  */
-enum ActivationType Activation::getActivationType()
+enum ActivationType Activation::getActivationType() const
 {
     return activationType;
 }
 
 /**  Applies activation function on input.*/
-Matrix Activation::operator()(const Matrix &input)
+Matrix Activation::operator()(const Matrix &input) const
 {
     switch (activationType)
     {
@@ -31,7 +31,7 @@ Matrix Activation::operator()(const Matrix &input)
 }
 
 /** Applies Relu activation function on input.*/
-Matrix Activation::_relu(const Matrix &input)
+Matrix Activation::_relu(const Matrix &input) const
 {
     Matrix reluMat(input);
 
@@ -49,7 +49,7 @@ Matrix Activation::_relu(const Matrix &input)
 }
 
 /** Applies Softmax activation function on input.*/
-Matrix Activation::_softmax(const Matrix &input)
+Matrix Activation::_softmax(const Matrix &input) const
 {
     Matrix softmaxMat(input);
     float divisor = 0;
@@ -64,8 +64,7 @@ Matrix Activation::_softmax(const Matrix &input)
         }
     }
 
-    Matrix res = ((float)(1 / divisor) * softmaxMat);
-    return res;
+    return ((float) (1 / divisor) * softmaxMat);
 }
 
 
